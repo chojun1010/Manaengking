@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //--- ListView 설정
-//        String[] str = {"가", "나", "다", "라"};
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, str);
-//        binding.listView.setAdapter(adapter);
+        String[] str = {"가", "나", "다", "라"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, str);
+        binding.listView.setAdapter(adapter);
 
     } // 생성자 끝
 
