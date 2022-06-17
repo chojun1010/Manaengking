@@ -1,4 +1,5 @@
 //--- MainActivity
+// 마내킹 메인
 
 package com.example.manaengking;
 
