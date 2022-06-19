@@ -22,11 +22,12 @@ import com.example.manaengking.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     // view binding
     private ActivityMainBinding binding;
-
+    public ItemAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        adapter = new ItemAdapter();
         viewBinding(); // view binding
         //--- Button Listener 설정
         binding.pushItemBtn.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        binding.refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setListView();
+            }
+        });
 
         //--- ListView 설정
         setListView();
@@ -54,11 +61,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
     }
     private void setListView() {
-        ItemAdapter adapter = new ItemAdapter();
-        for(int i=0; i<15; i++) {
-            ItemData itemData = new ItemData("우유" + i, "냉장", "14일");
-            adapter.addItem(itemData);
-        }
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("이름");
+        String type = intent.getStringExtra("보관방법");
+        long remaining = intent.getLongExtra("날짜", 0);
+
+        ItemData itemData = new ItemData(name, type, remaining+"일 남음");
+        if(!name.equals("") && !type.equals("") && remaining != 0)
+        adapter.addItem(itemData);
         binding.listView.setAdapter(adapter);
     }
 
