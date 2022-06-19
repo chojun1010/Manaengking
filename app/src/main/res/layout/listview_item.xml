@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:background="#FF9800">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:orientation="horizontal"
+            android:weightSum="100" >
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="100"
+                android:text="식료품"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:background="#FFFFFF"
+                android:gravity="center"
+                android:layout_margin="3dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:text="보관 방법"
+            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="30"
+            android:gravity="center"
+            android:background="#FFFFFF"
+            android:textColor="@color/black"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="60"
+            android:orientation="horizontal"
+            android:weightSum="100" >
+            <TextView
+                android:id="@+id/tv_remaining"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="100"
+                android:text="남은 유통기한"
+                android:textStyle="bold"
+                android:background="#FFFFFF"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_margin="3dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

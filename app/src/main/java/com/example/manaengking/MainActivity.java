@@ -5,6 +5,7 @@ package com.example.manaengking;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -44,24 +45,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //--- ListView 설정
-        String[] str = {"가", "나", "다", "라", "마", "바", "사", "아", "자", "차", "카", "타", "파", "하"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, str) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent)
-            {
-                View view = super.getView(position, convertView, parent);
-                TextView tv = (TextView) view.findViewById(android.R.id.text1);
-                tv.setTextColor(Color.DKGRAY);
-                return view;
-            }
-        };
-        binding.listView.setAdapter(adapter);
+        setListView();
 
     } // 생성자 끝
 
     private void viewBinding() {
         binding = ActivityMainBinding.inflate((getLayoutInflater()));
         setContentView(binding.getRoot());
+    }
+    private void setListView() {
+        ItemAdapter adapter = new ItemAdapter();
+        for(int i=0; i<15; i++) {
+            ItemData itemData = new ItemData("우유" + i, "냉장", "14일");
+            adapter.addItem(itemData);
+        }
+        binding.listView.setAdapter(adapter);
     }
 
 }
