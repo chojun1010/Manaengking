@@ -1,6 +1,5 @@
 package com.example.manaengking;
 
-import java.util.Date;
 
 public class ItemData {
     public String name;
@@ -13,5 +12,9 @@ public class ItemData {
         this.type = type;
         this.remaining = remaining;
         this.dDay = dDay;
+    }
+
+    public String getName() {
+        return name;
     }
 }

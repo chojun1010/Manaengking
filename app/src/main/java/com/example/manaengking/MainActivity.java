@@ -28,12 +28,12 @@ import com.example.manaengking.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     // view binding
     private ActivityMainBinding binding;
-    public ItemAdapter adapter;
+    public static ItemAdapter adapter;
     public static Context mContext;
     public static SharedPreferences pref;
     public static SharedPreferences.Editor editor;
     public static String datas;
-
+    public static int items;
     public static String apiResult;
 
     @Override
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, PushItem.class);
                 startActivity(intent);
+                finish();
             }
         });
         binding.cookingRecmdBtn.setOnClickListener(new View.OnClickListener() {
@@ -65,15 +66,20 @@ public class MainActivity extends AppCompatActivity {
                 init();
             }
         });
-        binding.button2.setOnClickListener(new View.OnClickListener() {
+
+        binding.shoppingBasketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemSort();
+                Intent intent = new Intent(MainActivity.this, ShoppingBasketActivity.class);
+                startActivity(intent);
             }
         });
 
         //--- ListView 설정
+        itemSort();
         loadDatas();
+        items = adapter.getCount();
+        System.out.println(items);
 
     } // 생성자 끝
 
@@ -131,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (i % 3 == 1) {
                 type = tmp[i];
             } else if (i % 3 == 2) {
-                strrm = tmp[i] + "일 남음";
+                strrm = tmp[i];
                 remaining = Long.parseLong(tmp[i]);
                 ItemData itemData = new ItemData(name, type, strrm, remaining);
                 adapter.addItem(itemData);
@@ -184,13 +190,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void itemSort() {
+        pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        editor = pref.edit();
+        datas = pref.getString("데이터", "");
         System.out.println("Sort");
         String[] tmp = datas.split(",");
         int cnt = tmp.length / 3;
         if(cnt <= 1) return;
         for(int i=2; i<=tmp.length - 3; i+=3) {
-            for(int j=5; j<=tmp.length-3; j+=3) {
-                if(Long.parseLong(tmp[j]) > Long.parseLong(tmp[j+3])) {
+            for(int j=i+3; j<=tmp.length; j+=3) {
+                if(Long.parseLong(tmp[i]) > Long.parseLong(tmp[j])) {
                     System.out.println((i-2) + ", " + (j-2));
                     itemSwap(tmp, i-2, j-2);
                 }
@@ -201,8 +210,7 @@ public class MainActivity extends AppCompatActivity {
             datas += tmp[i] + ',';
         }
         System.out.println(datas);
-        pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        editor = pref.edit();
+
         editor.clear();
         editor.commit();
         editor.putString("데이터", datas);

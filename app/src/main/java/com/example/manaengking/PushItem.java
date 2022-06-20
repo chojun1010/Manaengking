@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -79,6 +80,17 @@ public class PushItem extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if(keycode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(PushItem.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+
+        return false;
+    }
 
     public void addItemData(View view) {
         EditText editText = findViewById(R.id.editText1);

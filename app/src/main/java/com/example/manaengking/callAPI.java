@@ -54,7 +54,7 @@ public class callAPI {
                     result = sb.toString().trim();
                     System.out.println(result);
 //                    CookingRecmd.textView.setText(result);
-                    String foodName = "";
+                    String results = "";
 
 
                     JSONObject root = (JSONObject) new JSONTokener(result).nextValue();
@@ -68,17 +68,34 @@ public class callAPI {
                     JSONArray array = new JSONArray(root.getString("row"));
                     System.out.println(array.length());
                     int cnt = 0;
-                    for(int i=0; i<array.length(); i++) {
-                        JSONObject obj = array.getJSONObject(i);
-                        if(obj.getString("RCP_PARTS_DTLS").contains(resource1) && obj.getString("RCP_PARTS_DTLS").contains(resource2)) {
-                            foodName += (cnt+1) + ") " + obj.getString("RCP_NM") + "\n";
-                            foodName += "필요한 재료 : " + obj.getString("RCP_PARTS_DTLS") + "\n";
-                            foodName += "\n\n";
-                            cnt++;
+                    if(MainActivity.items >= 1) {
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject obj = array.getJSONObject(i);
+                            if (obj.getString("RCP_PARTS_DTLS").contains(resource1)) {
+                                results += (cnt + 1) + ") " + obj.getString("RCP_NM") + "\n";
+                                results += "필요한 재료 : " + obj.getString("RCP_PARTS_DTLS") + "\n";
+                                results += "\n\n";
+                                cnt++;
+                                if (cnt == 5) break;
+                            }
                         }
                     }
-                    if(foodName.equals("")) CookingRecmd.textView.setText("추천할만한 요리가 없습니다!!");
-                    CookingRecmd.textView.setText(foodName);
+                    results += "=================================\n\n";
+                    cnt = 0;
+                    if(MainActivity.items >= 2) {
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject obj = array.getJSONObject(i);
+                            if (obj.getString("RCP_PARTS_DTLS").contains(resource2)) {
+                                results += (cnt + 1) + ") " + obj.getString("RCP_NM") + "\n";
+                                results += "필요한 재료 : " + obj.getString("RCP_PARTS_DTLS") + "\n";
+                                results += "\n\n";
+                                cnt++;
+                                if (cnt == 5) break;
+                            }
+                        }
+                    }
+                    if(results.equals("")) CookingRecmd.textView.setText("추천할만한 요리가 없습니다!!");
+                    CookingRecmd.textView.setText(results);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

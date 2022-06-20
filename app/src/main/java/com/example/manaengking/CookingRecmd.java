@@ -3,6 +3,8 @@
 
 package com.example.manaengking;
 
+
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -22,7 +24,17 @@ public class CookingRecmd extends AppCompatActivity {
         textView.setText("추천할 요리를 불러오는 중입니다.");
         textView.setMovementMethod(new ScrollingMovementMethod());
         textView.setScrollY(0);
-        callAPI.getJson("달걀", "소금");
+        String[] tmp = MainActivity.datas.split(",");
+        if(MainActivity.items == 0) {
+            textView.setText("냉장고에 재료가 없어 추천할만한 요리가 없습니다!");
+        }
+        else {
+            String rsrc1 = tmp[0];
+            String rsrc2 = "";
+            if(MainActivity.items >= 2) rsrc2 = tmp[3];
+            callAPI.getJson(rsrc1, rsrc2);
+        }
+
     }
 
 }

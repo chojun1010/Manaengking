@@ -90,15 +90,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="176dp"
-        android:text="Button"
+    <ImageButton
+        android:id="@+id/shoppingBasketButton"
+        android:layout_width="68dp"
+        android:layout_height="58dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.953"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023"
+        app:srcCompat="@drawable/shoppingbasket" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

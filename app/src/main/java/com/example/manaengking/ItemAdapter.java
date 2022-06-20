@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 /* 리스트뷰 어댑터 */
 public class ItemAdapter extends BaseAdapter {
-    ArrayList<ItemData> items = new ArrayList<ItemData>();
+    public ArrayList<ItemData> items = new ArrayList<ItemData>();
 
     @Override
     public int getCount() {
@@ -61,7 +62,9 @@ public class ItemAdapter extends BaseAdapter {
 
         tv_name.setText(itemData.name);
         tv_type.setText(itemData.type);
-        tv_remaining.setText(itemData.remaining);
+        if(Long.parseLong(itemData.remaining) <= 3) tv_remaining.setTextColor(Color.parseColor("#D50000"));
+        else tv_remaining.setTextColor(Color.parseColor("#000000"));
+        tv_remaining.setText(itemData.remaining + "일 남음");
         Log.d(TAG, "getView() - [ "+position+" ] "+itemData.name);
 
         //각 아이템 선택 event
