@@ -6,8 +6,10 @@ package com.example.manaengking;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -18,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.manaengking.databinding.ActivityMainBinding;
 
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public static SharedPreferences pref;
     public static SharedPreferences.Editor editor;
     public static String datas;
+
+    public static String apiResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,22 +59,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        binding.refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onRestart();
-            }
-        });
-
         binding.initButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                datas = "";
-                pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                editor = pref.edit();
-                editor.clear();
-                editor.commit();
-                refreshScreen();
+                init();
+            }
+        });
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemSort();
             }
         });
 
@@ -77,6 +76,35 @@ public class MainActivity extends AppCompatActivity {
         loadDatas();
 
     } // 생성자 끝
+
+    private void init() {
+        AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(mContext);
+        // alert의 title과 Messege 세팅
+        myAlertBuilder.setTitle("알림");
+        myAlertBuilder.setMessage("냉장고를 비우시겠습니까?");
+        // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
+        myAlertBuilder.setPositiveButton("Ok",new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog,int which){
+                // OK 버튼을 눌렸을 경우
+                datas = "";
+                pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                editor = pref.edit();
+                editor.clear();
+                editor.commit();
+                refreshScreen();
+                Toast.makeText(mContext,"냉장고를 비웠습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        myAlertBuilder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Cancle 버튼을 눌렸을 경우
+                Toast.makeText(mContext,"취소하였습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
+        myAlertBuilder.show();
+    }
 
     private void refreshScreen() {
         finish();//인텐트 종료
@@ -87,13 +115,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadDatas() {
+        System.out.println("LoadDatas");
         String name = "", type = "", strrm = "";
         long remaining = 0;
         pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         editor = pref.edit();
-
         datas = pref.getString("데이터", "");
-        //System.out.println(datas);
+
+        System.out.println(datas);
         String[] tmp = datas.split(",");
         for (int i = 0; i < tmp.length; i++) {
             System.out.println("현재 tmp[i] : " + tmp[i]);
@@ -153,17 +182,48 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate((getLayoutInflater()));
         setContentView(binding.getRoot());
     }
-    private void setListView() {
-        Intent intent = getIntent();
 
-        if(intent.hasExtra("이름") && intent.hasExtra("보관방법") && intent.hasExtra("날짜")) {
-            String name = intent.getStringExtra("이름");
-            String type = intent.getStringExtra("보관방법");
-            long remaining = intent.getLongExtra("날짜", 0);
-
-            ItemData itemData = new ItemData(name, type, remaining + "일 남음", remaining);
-            adapter.addItem(itemData);
-            binding.listView.setAdapter(adapter);
+    private void itemSort() {
+        System.out.println("Sort");
+        String[] tmp = datas.split(",");
+        int cnt = tmp.length / 3;
+        if(cnt <= 1) return;
+        for(int i=2; i<=tmp.length - 3; i+=3) {
+            for(int j=5; j<=tmp.length-3; j+=3) {
+                if(Long.parseLong(tmp[j]) > Long.parseLong(tmp[j+3])) {
+                    System.out.println((i-2) + ", " + (j-2));
+                    itemSwap(tmp, i-2, j-2);
+                }
+            }
         }
+        datas = "";
+        for(int i=0; i<tmp.length; i++) {
+            datas += tmp[i] + ',';
+        }
+        System.out.println(datas);
+        pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        editor = pref.edit();
+        editor.clear();
+        editor.commit();
+        editor.putString("데이터", datas);
+        tmp = datas.split(",");
+        for(int i=0; i<tmp.length; i++) {
+            System.out.println("tmp[" + i + "] = " + tmp[i]);
+        }
+        editor.apply();
+    }
+    private static void itemSwap(String[] arr, int start1, int start2) {
+        String s1 = arr[start1];
+        String s2 = arr[start1+1];
+        String s3 = arr[start1+2];
+
+        arr[start1] = arr[start2];
+        arr[start1+1] = arr[start2+1];
+        arr[start1+2] = arr[start2+2];
+
+        arr[start2] = s1;
+        arr[start2+1] = s2;
+        arr[start2+2] = s3;
+
     }
 }
