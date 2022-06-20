@@ -2,7 +2,10 @@ package com.example.manaengking;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,10 +65,31 @@ public class ItemAdapter extends BaseAdapter {
         Log.d(TAG, "getView() - [ "+position+" ] "+itemData.name);
 
         //각 아이템 선택 event
-        convertView.setOnClickListener(new View.OnClickListener() {
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "식료품 : " + itemData.name+", 보관 방법 : " + itemData.type + ", 남은 유통기한 : " + itemData.remaining, Toast.LENGTH_SHORT).show();
+            public boolean onLongClick(View view) {
+                AlertDialog.Builder myAlertBuilder = new AlertDialog.Builder(context);
+                // alert의 title과 Messege 세팅
+                myAlertBuilder.setTitle("알림");
+                myAlertBuilder.setMessage(itemData.name + "을(를) 삭제하시겠습니까?");
+                // 버튼 추가 (Ok 버튼과 Cancle 버튼 )
+                myAlertBuilder.setPositiveButton("Ok",new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog,int which){
+                        // OK 버튼을 눌렸을 경우
+                        ((MainActivity)MainActivity.mContext).deleteItem(position);
+                        Toast.makeText(context,"삭제하였습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                myAlertBuilder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Cancle 버튼을 눌렸을 경우
+                        Toast.makeText(context,"취소하였습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                // Alert를 생성해주고 보여주는 메소드(show를 선언해야 Alert가 생성됨)
+                myAlertBuilder.show();
+                return true;
             }
         });
 

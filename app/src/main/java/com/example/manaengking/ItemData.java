@@ -8,9 +8,10 @@ public class ItemData {
     public String remaining;
     long dDay;
 
-    public ItemData(String name, String type, String remaining) {
+    public ItemData(String name, String type, String remaining, long dDay) {
         this.name = name;
         this.type = type;
         this.remaining = remaining;
+        this.dDay = dDay;
     }
 }
