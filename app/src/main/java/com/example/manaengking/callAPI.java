@@ -17,7 +17,7 @@ import java.net.MalformedURLException;
 
 public class callAPI {
     final static String key = "d7b4bc92edbb449d94d9";
-    static String url = "https://openapi.foodsafetykorea.go.kr/api/" + key + "/COOKRCP01/json/1/100/";
+    static String url = "https://openapi.foodsafetykorea.go.kr/api/" + key + "/COOKRCP01/json/1/500/";
 
     public static void getJson(String resource1, String resource2) {
         //if(!resource.equals("")) url += "RCP_NM=" + resource;
